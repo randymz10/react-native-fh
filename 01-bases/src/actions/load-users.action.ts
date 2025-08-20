@@ -9,6 +9,9 @@ export const loadUsersAction = async (page: number) => {
         params: {
           page: page,
         },
+        headers: {
+          "x-api-key": "reqres-free-v1",
+        },
       }
     );
 
