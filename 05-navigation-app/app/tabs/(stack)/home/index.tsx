@@ -11,7 +11,7 @@ const ProfileScreen = () => {
         <CustomBottom
           className="mb-2"
           color="primary"
-          onPress={() => router.push("/products")}
+          onPress={() => router.push("/tabs/(stack)/products")}
         >
           Products
         </CustomBottom>
@@ -19,7 +19,7 @@ const ProfileScreen = () => {
         <CustomBottom
           className="mb-2"
           color="secondary"
-          onPress={() => router.push("/profile")}
+          onPress={() => router.push("/tabs/profile")}
         >
           Profile
         </CustomBottom>
@@ -27,15 +27,15 @@ const ProfileScreen = () => {
         <CustomBottom
           className="mb-2"
           color="tertiary"
-          onPress={() => router.push("/settings")}
+          onPress={() => router.push("/tabs/settings")}
         >
           Settings
         </CustomBottom>
 
-        <Link href="/products" asChild>
+        <Link href="/tabs/products" asChild>
           <CustomBottom
             variant="text-only"
-            onPress={() => router.push("/products")}
+            onPress={() => router.push("/tabs/products")}
           >
             Products
           </CustomBottom>
