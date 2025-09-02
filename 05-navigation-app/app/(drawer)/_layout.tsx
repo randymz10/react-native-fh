@@ -17,6 +17,17 @@ const DrawerLayout = () => {
       }}
     >
       <Drawer.Screen
+        name="(tabs)" // This is the name of the page and must match the url from root
+        options={{
+          headerShown: false,
+          drawerLabel: "Tabs + Stack",
+          title: "Tabs + Stack",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="albums-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="user/index" // This is the name of the page and must match the url from root
         options={{
           drawerLabel: "User",

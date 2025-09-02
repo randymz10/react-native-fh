@@ -23,7 +23,7 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Slot />;
+      <Slot />
     </GestureHandlerRootView>
   );
   // return <Slot />;
