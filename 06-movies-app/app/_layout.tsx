@@ -1,15 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Stack } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "../global.css";
-import { nowPlayingAction } from "@/core/actions/movies/now-playing.action";
 
 const RootLayout = () => {
-  nowPlayingAction();
+  const queryClient = new QueryClient();
+
   return (
-    <View className="flex flex-1 bg-blue-500 ">
-      <Text className="mt-20 bg-blue-500">RootLayout</Text>
-    </View>
+    <GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <Stack screenOptions={{ headerShown: false }} />
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 };
 
