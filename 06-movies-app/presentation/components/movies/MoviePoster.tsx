@@ -5,7 +5,7 @@ interface Props {
   id: number;
   poster: string;
   smallPoster?: boolean;
-  className: string;
+  className?: string;
 }
 
 const MoviePoster = ({ poster, id, smallPoster = false, className }: Props) => {
