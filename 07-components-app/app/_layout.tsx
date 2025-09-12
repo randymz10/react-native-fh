@@ -4,16 +4,17 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-
 import "../global.css";
-import { Text, View } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Stack } from "expo-router";
+import { allRoutes } from "@/constants/Routes";
 
 export default function RootLayout() {
+  const backgroundColor = useThemeColor({}, "background");
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -25,15 +26,33 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <View className="bg-light-background dark:bg-dark-background">
-        <Text className="text-3xl mt-10 text-light-primary dark:text-dark-primary">
-          Hola mundo
-        </Text>
-        {/* <Stack>
-      </Stack> */}
-        <StatusBar style="auto" />
-      </View>
-    </ThemeProvider>
+    <GestureHandlerRootView
+      style={{ backgroundColor: backgroundColor, flex: 1 }}
+    >
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack
+          screenOptions={{
+            headerShadowVisible: false,
+            contentStyle: {
+              backgroundColor: backgroundColor,
+            },
+            headerStyle: {
+              backgroundColor: backgroundColor,
+            },
+          }}
+        >
+          <Stack.Screen name="index" options={{ title: "" }} />
+          {allRoutes.map((route) => (
+            <Stack.Screen
+              key={route.name}
+              name={route.name}
+              options={{
+                title: route.title,
+              }}
+            />
+          ))}
+        </Stack>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
