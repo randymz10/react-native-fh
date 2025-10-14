@@ -11,7 +11,7 @@ const ThemeText = ({ className, type, ...rest }: Props) => {
   return (
     <Text
       className={[
-        "text-3xl mt-10 text-light-primary dark:text-dark-primary",
+        "text-3xl text-light-primary dark:text-dark-primary",
         type === "normal" ? "font-normal" : undefined,
         type === "h1" ? "text-3xl" : undefined,
         type === "h2" ? "text-xl" : undefined,
