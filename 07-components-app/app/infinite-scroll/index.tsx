@@ -5,6 +5,7 @@ import ThemedView from "@/presentation/shared/ThemedView";
 import ThemeText from "@/presentation/shared/ThemeText";
 import { ActivityIndicator, Image, View } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import FadeInImage from "@/presentation/images/FadeInImage";
 
 const InfiniteScrollScreen = () => {
   const [numbers, setNumbers] = useState([0, 1, 2, 3, 4, 5]);
@@ -42,9 +43,13 @@ interface ListItemProps {
 
 const ListItem = ({ number }: ListItemProps) => {
   return (
-    <Image
-      source={{ uri: `https://picsum.photos/id/${number}/500/400` }}
+    <FadeInImage
+      uri={`https://picsum.photos/id/${number}/500/400`}
       style={{ height: 400, width: "100%" }}
     />
+    // <Image
+    //   source={{ uri: `https://picsum.photos/id/${number}/500/400` }}
+    //   style={{ height: 400, width: "100%" }}
+    // />
   );
 };
