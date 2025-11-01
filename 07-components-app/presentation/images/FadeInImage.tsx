@@ -4,7 +4,6 @@ import {
   View,
   ActivityIndicator,
   StyleProp,
-  Image,
   ImageStyle,
   Animated,
 } from "react-native";
