@@ -12,6 +12,7 @@ import "../global.css";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Stack } from "expo-router";
 import { allRoutes } from "@/constants/Routes";
+import { ThemeChangerProvider } from "@/presentation/context/ThemeChangerContext";
 
 export default function RootLayout() {
   const backgroundColor = useThemeColor({}, "background");
@@ -29,7 +30,8 @@ export default function RootLayout() {
     <GestureHandlerRootView
       style={{ backgroundColor: backgroundColor, flex: 1 }}
     >
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <ThemeChangerProvider>
+        {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
         <Stack
           screenOptions={{
             headerShadowVisible: false,
@@ -53,7 +55,8 @@ export default function RootLayout() {
             />
           ))}
         </Stack>
-      </ThemeProvider>
+        {/* </ThemeProvider> */}
+      </ThemeChangerProvider>
     </GestureHandlerRootView>
   );
 }
