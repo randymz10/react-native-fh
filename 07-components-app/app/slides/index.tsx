@@ -1,13 +1,15 @@
 import ThemedButton from "@/presentation/shared/ThemedButton";
 import ThemedView from "@/presentation/shared/ThemedView";
 import ThemeText from "@/presentation/shared/ThemeText";
+import { router } from "expo-router";
+import { useRef, useState } from "react";
 import {
-  View,
-  Text,
   ImageSourcePropType,
   FlatList,
   Image,
   useWindowDimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from "react-native";
 
 interface Slide {
@@ -35,21 +37,57 @@ const items: Slide[] = [
 ];
 
 const SlidesScreen = () => {
+  // Variables, State, Ref...
+  const flatListRef = useRef<FlatList>(null);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isEnableScroll, setIsEnableScroll] = useState(false);
+
+  // Functions
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (isEnableScroll) return;
+
+    const { contentOffset, layoutMeasurement } = event.nativeEvent;
+    const currentIndex = Math.floor(contentOffset.x / layoutMeasurement.width);
+
+    setCurrentSlideIndex(currentIndex > 0 ? currentIndex : 0);
+    
+    if (currentIndex === items.length - 1) setIsEnableScroll(true);
+  };
+
+  const scrollToSlide = (index: number) => {
+    if (!flatListRef.current) return;
+
+    flatListRef.current.scrollToIndex({ index, animated: true });
+  };
+
   return (
     <ThemedView>
       <FlatList
+        ref={flatListRef}
         data={items}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => <SlideItem item={item} />}
         horizontal
         pagingEnabled
+        scrollEnabled={isEnableScroll}
+        onScroll={onScroll}
       />
-      <ThemedButton className="absolute bottom-12 right-5 2-[150px]">
-        Siguiente
-      </ThemedButton>
-      <ThemedButton className="absolute bottom-12 right-5 2-[150px]">
-        Finalizar
-      </ThemedButton>
+
+      {currentSlideIndex === items.length - 1 ? (
+        <ThemedButton
+          className="absolute bottom-12 right-5 2-[150px]"
+          onPress={() => router.dismiss()}
+        >
+          Finalizar
+        </ThemedButton>
+      ) : (
+        <ThemedButton
+          className="absolute bottom-12 right-5 2-[150px]"
+          onPress={() => scrollToSlide(currentSlideIndex + 1)}
+        >
+          Siguiente
+        </ThemedButton>
+      )}
     </ThemedView>
   );
 };
