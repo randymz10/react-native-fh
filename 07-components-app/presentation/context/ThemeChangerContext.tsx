@@ -1,14 +1,23 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useColorScheme } from "nativewind";
+import { Colors } from "@/constants/Colors";
 
 interface ThemeChangerContextType {
   currentTheme: "dark" | "light";
   isSystemTheme: boolean;
+  bgColor: string;
 
   toggleTheme: () => void;
   setSystemTheme: () => void;
@@ -36,6 +45,18 @@ export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
     : isDarkMode
       ? "dark"
       : "light";
+  const backgroundColor = isDarkMode
+    ? Colors.dark.background
+    : Colors.light.background;
+  useEffect(() => {
+    AsyncStorage.getItem("selected-theme").then((theme) => {
+      if (!theme) return;
+
+      setIsDarkMode(theme === "dark");
+      setIsSystemThemeEnable(theme === "system");
+      setColorScheme((theme as "light") || "dark" || "system");
+    });
+  }, []);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -43,6 +64,7 @@ export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
         value={{
           currentTheme: currentTheme ?? "light",
           isSystemTheme: isSystemThemeEnable,
+          bgColor: backgroundColor,
 
           toggleTheme: async () => {
             setIsDarkMode(!isDarkMode);
@@ -50,10 +72,17 @@ export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
             setIsSystemThemeEnable(false);
 
             // TODO: guardar em storage
+
+            await AsyncStorage.setItem(
+              "selected-theme",
+              isDarkMode ? "light" : "dark"
+            );
           },
+
           setSystemTheme: async () => {
             setIsSystemThemeEnable(true);
             setColorScheme("system");
+            await AsyncStorage.setItem("selected-theme", "system");
           },
         }}
       >
