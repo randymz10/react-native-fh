@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import {
   DarkTheme,
   DefaultTheme,
@@ -18,7 +18,7 @@ const ThemeChangerContext = createContext({} as ThemeChangerContextType);
 
 // Custom Hook
 
-const useThemeChangerContext = () => {
+export const useThemeChangerContext = () => {
   const themeChanger = useContext(ThemeChangerContext);
   return themeChanger;
 };
@@ -26,17 +26,35 @@ const useThemeChangerContext = () => {
 // Provider
 
 export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
-  const { colorScheme } = useColorScheme();
+  const { colorScheme, setColorScheme } = useColorScheme();
+
+  const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
+  const [isSystemThemeEnable, setIsSystemThemeEnable] = useState(true);
+
+  const currentTheme = isSystemThemeEnable
+    ? colorScheme
+    : isDarkMode
+      ? "dark"
+      : "light";
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <ThemeChangerContext.Provider
         value={{
-          currentTheme: "light",
-          isSystemTheme: false,
+          currentTheme: currentTheme ?? "light",
+          isSystemTheme: isSystemThemeEnable,
 
-          toggleTheme: async () => {},
-          setSystemTheme: async () => {},
+          toggleTheme: async () => {
+            setIsDarkMode(!isDarkMode);
+            setColorScheme(isDarkMode ? "light" : "dark");
+            setIsSystemThemeEnable(false);
+
+            // TODO: guardar em storage
+          },
+          setSystemTheme: async () => {
+            setIsSystemThemeEnable(true);
+            setColorScheme("system");
+          },
         }}
       >
         {children}

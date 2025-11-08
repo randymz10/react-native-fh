@@ -1,8 +1,8 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+// import {
+//   DarkTheme,
+//   DefaultTheme,
+//   ThemeProvider,
+// } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 // import "react-native-reanimated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
