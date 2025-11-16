@@ -4,11 +4,11 @@ import { ThemedText } from "@/components/themed-text";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 const PushApp = () => {
-  const {} = usePushNotifications();
+  const {expoPushToken} = usePushNotifications();
   
   return (
     <View style={{ marginHorizontal: 10, marginTop: 5 }}>
-      <ThemedText>Token: </ThemedText>
+      <ThemedText>Token: {expoPushToken} </ThemedText>
     </View>
   );
 };
