@@ -116,7 +116,10 @@ export const usePushNotifications = () => {
 
     const notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
-        setNotifications([notification, ...notifications]);
+        setNotifications((prevNotifications) => [
+          notification,
+          ...prevNotifications,
+        ]);
       }
     );
 
